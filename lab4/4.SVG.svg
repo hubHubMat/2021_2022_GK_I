@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600px" height="600px" viewBox="0 0 15 15" preserveAspectRatio="xMidYMid">
+
+
+	<defs>
+
+	<g id="left">
+	<g>
+	<animateTransform attributeName = "transform" type = "rotate" from = "0,1,2" to = "360,1,2" dur = "6s" repeatCount="indefinite" /> 
+
+	<polygon points="1.6306782075316932,2.3037186173822906 1.15576465376942,
+	2.6824495385272766 0.5635571386988866,2.547282037727621 0.30000000000000004,
+	2 0.5635571386988865,1.4527179622723794 1.1557646537694206,1.3175504614727236 1.6306782075316932,
+	1.6962813826177092"/>
+	</g>
+
+	<g>
+	<animateTransform attributeName = "transform" type = "rotate" from = "0,4,2.5" to = "360,4,2.5" dur = "6s" repeatCount="indefinite" /> 
+	<polygon points="4.630678207531693,2.8037186173822906 4.15576465376942,
+	3.1824495385272766 3.5635571386988865,3.047282037727621 3.3,2.5 3.5635571386988865,
+	1.9527179622723794 4.15576465376942,1.8175504614727236 4.630678207531693,2.196281382617709"/>
+	</g>
+	<line x1="1" x2="4" y1="2" y2="2.5" stroke="red" stroke-width="0.2"/>
+	<polygon points="2.5,2.25 3,4.5 2,4.5"  fill="purple"/>
+	</g>
+	
+	
+	<g id="mid">
+	<g>
+	<animateTransform attributeName = "transform" type = "rotate" from = "0,1,2" to = "360,1,2" dur = "6s" repeatCount="indefinite" /> 
+
+	<polygon points="1.6306782075316932,2.3037186173822906 1.15576465376942,
+	2.6824495385272766 0.5635571386988866,2.547282037727621 0.30000000000000004,
+	2 0.5635571386988865,1.4527179622723794 1.1557646537694206,1.3175504614727236 1.6306782075316932,
+	1.6962813826177092"/>
+	</g>
+
+	<g>
+	<animateTransform attributeName = "transform" type = "rotate" from = "0,4,2.5" to = "360,4,2.5" dur = "6s" repeatCount="indefinite" /> 
+	<polygon points="4.630678207531693,2.8037186173822906 4.15576465376942,
+	3.1824495385272766 3.5635571386988865,3.047282037727621 3.3,2.5 3.5635571386988865,
+	1.9527179622723794 4.15576465376942,1.8175504614727236 4.630678207531693,2.196281382617709"/>
+	</g>
+	<line x1="1" x2="4" y1="2" y2="2.5" stroke="red" stroke-width="0.2"/>
+	<polygon points="2.5,2.25 3,4.5 2,4.5"  fill="blue"/>
+	</g>
+	
+	
+	<g id="right">
+	<g>
+	<animateTransform attributeName = "transform" type = "rotate" from = "0,1,2" to = "360,1,2" dur = "6s" repeatCount="indefinite" /> 
+
+	<polygon points="1.6306782075316932,2.3037186173822906 1.15576465376942,
+	2.6824495385272766 0.5635571386988866,2.547282037727621 0.30000000000000004,
+	2 0.5635571386988865,1.4527179622723794 1.1557646537694206,1.3175504614727236 1.6306782075316932,
+	1.6962813826177092"/>
+	</g>
+
+	<g>
+	<animateTransform attributeName = "transform" type = "rotate" from = "0,4,2.5" to = "360,4,2.5" dur = "6s" repeatCount="indefinite" /> 
+	<polygon points="4.630678207531693,2.8037186173822906 4.15576465376942,
+	3.1824495385272766 3.5635571386988865,3.047282037727621 3.3,2.5 3.5635571386988865,
+	1.9527179622723794 4.15576465376942,1.8175504614727236 4.630678207531693,2.196281382617709"/>
+	</g>
+	<line x1="1" x2="4" y1="2" y2="2.5" stroke="red" stroke-width="0.2"/>
+	<polygon points="2.5,2.25 3,4.5 2,4.5"  fill="green"/>
+	</g>
+	
+	
+	</defs>
+
+<use xlink:href = "#left" transform = "scale(1.2,1.2)" />
+<use xlink:href = "#mid"  transform = "translate(4,3) scale(1.6,1.6)" />
+<use xlink:href = "#right" transform = "scale(0.7,0.7) translate(14,0)" />
+</svg>
