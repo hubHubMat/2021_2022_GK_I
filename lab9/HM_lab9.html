@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>CS 424 Lab 9</title>
+  <script src="build/three.js"></script>
+  <script src="resources/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"> </script>
+  <script>
+
+    "use strict";
+
+    var canvas, renderer, scene, camera; // Standard three.js requirements.
+
+    var controls;  // An OrbitControls object that is used to implement
+                   // rotation of the scene using the mouse.  (It actually rotates
+                   // the camera around the scene.)
+
+    var animating = false;  // Set to true when an animation is in progress.
+    var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
+
+    var tempObject;  // A temporary animated object.  DELETE IT.
+
+
+    /**
+     *  The render function draws the scene.
+     */
+    function render() {
+      renderer.render(scene, camera);
+    }
+
+
+    /**
+     * This function is called by the init() method to create the world.
+     */
+    function createWorld() {
+
+      renderer.setClearColor("black"); // Background color for scene.
+      scene = new THREE.Scene();
+
+      // ------------------- Make a camera with viewpoint light ----------------------
+
+      camera = new THREE.PerspectiveCamera(100, canvas.width/canvas.height, 1, 100);
+      camera.position.z = 30;
+      var light;  // A light shining from the direction of the camera; moves with the camera.
+      light = new THREE.DirectionalLight();
+      light.position.set(0,0,1);
+      camera.add(light);
+      scene.add(camera);
+
+      //------------------- Create the scene's visible objects ----------------------
+
+     /* tempObject =  new THREE.Mesh(  // DELETE THIS !
+        new THREE.SphereGeometry(2,4,20,20),
+        new THREE.MeshPhongMaterial({
+          color: 0x66BBFF,
+          specular: 0x222222,
+          shininess: 16,
+        })
+      );
+      tempObject.rotation.y = Math.PI/12;
+      scene.add(tempObject);
+
+      const points = [];
+      for ( let i = 0; i < 10; i ++ ) {
+        points.push( new THREE.Vector2(5, i  ) );
+      }
+      const geometry = new THREE.LatheGeometry( points );
+      const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+      const lathe = new THREE.Mesh( geometry, material );
+      scene.add( lathe );*/
+      const material = new THREE.MeshPhongMaterial(
+        {
+          color: 0xFFFFFF,
+          // wireframe: true
+        });
+
+      const baseGeometry = new THREE.CylinderGeometry(1, 1, 0.15, 100);
+
+      const base = new THREE.Mesh(baseGeometry, material);
+
+      const upperBaseGeometry = new THREE.CylinderGeometry(0.9, 0.9, 0.25, 100);
+
+      const upperBase = new THREE.Mesh(upperBaseGeometry, material);
+      upperBase.position.y = 0.1;
+
+
+      let group1 = new THREE.Group();
+      group1.add(base);
+      group1.add(upperBase);
+      group1.position.set(0, -4, 0);
+      group1.scale.set(1.6, 2.5, 1);
+
+      let points = [];
+      for (var i = 0; i < 7; i++) {
+        points.push(new THREE.Vector2(Math.tan(i * 0.07)*-3+6 , (i - 5) * 4));
+      }
+      let size = 0.2;
+      let geometry1 = new THREE.LatheGeometry(points);
+      let lathe1 = new THREE.Mesh(geometry1, material);
+      lathe1.position.set(0, -3, -0.3);
+      lathe1.scale.set(1.6*size, -size, -size);
+
+      const headLowerGeometry = new THREE.CylinderGeometry(0.9, 0.9, 0.25, 100);
+
+      const headLower = new THREE.Mesh(headLowerGeometry, material);
+
+      const headUpperGeometry = new THREE.CylinderGeometry(1.05, 1, 0.35, 100);
+
+      const headUpper = new THREE.Mesh(headUpperGeometry, material);
+      headUpper.position.y = 0.1;
+
+      let head = new THREE.Group();
+      head.add( headLower, headUpper);
+      head.position.set(0,1.2,0);
+      head.scale.set(2, 2, 1);
+
+      let chessPawn = new THREE.Group();
+      chessPawn.add(group1, lathe1, head);
+      scene.add(chessPawn);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+
+      camera.position.z = 5;
+
+      animate();
+
+
+
+
+    } // end function createWorld()
+
+
+    /**
+     *  This function is called once for each frame of the animation, before
+     *  the render() function is called for that frame.  It updates any
+     *  animated properties.  The value of the global variable frameNumber
+     *  is incrementd 1 before this function is called.
+     */
+    function updateForFrame() {
+
+    }
+
+
+    /* ---------------------------- MOUSE AND ANIMATION SUPPORT ------------------
+
+    /**
+     *  This page uses THREE.OrbitControls to let the user use the mouse to rotate
+     *  the view.  OrbitControls are designed to be used during an animation, where
+     *  the rotation is updated as part of preparing for the next frame.  The scene
+     *  is not automatically updated just because the user drags the mouse.  To get
+     *  the rotation to work without animation, I add another mouse listener to the
+     *  canvas, just to call the render() function when the user drags the mouse.
+     *  The same thing holds for touch events -- I call render for any mouse move
+     *  event with one touch.
+     */
+    function installOrbitControls() {
+      controls = new THREE.OrbitControls(camera,canvas);
+      controls.noPan = true;
+      controls.noZoom = true;
+      controls.staticMoving = true;
+      function move() {
+        controls.update();
+        if (! animating) {
+          render();
+        }
+      }
+      function down() {
+        document.addEventListener("mousemove", move, false);
+        animate();
+      }
+      function up() {
+        document.removeEventListener("mousemove", move, false);
+      }
+      function touch(event) {
+        if (event.touches.length == 1) {
+          move();
+        }
+      }
+      canvas.addEventListener("mousedown", down, false);
+      canvas.addEventListener("touchmove", touch, false);
+    }
+
+    /*  Called when user changes setting of the Animate checkbox. */
+    function doAnimateCheckbox() {
+      var run = document.getElementById("animateCheckbox").checked;
+      if (run != animating) {
+        animating = run;
+        if (animating) {
+          requestAnimationFrame(doFrame);
+        }
+      }
+    }
+
+    /*  Drives the animation, called by system through requestAnimationFrame() */
+    function doFrame() {
+      if (animating) {
+        frameNumber++;
+        updateForFrame();
+        render();
+        requestAnimationFrame(doFrame);
+      }
+    }
+
+    /*----------------------------- INITIALIZATION ----------------------------------------
+
+    /**
+     *  This function is called by the onload event so it will run after the
+     *  page has loaded.  It creates the renderer, canvas, and scene objects,
+     *  calls createWorld() to add objects to the scene, and renders the
+     *  initial view of the scene.  If an error occurs, it is reported.
+     */
+    function init() {
+      try {
+        canvas = document.getElementById("glcanvas");
+        renderer = new THREE.WebGLRenderer({
+          canvas: canvas,
+          antialias: true,
+          alpha: false
+        });
+      }
+      catch (e) {
+        document.getElementById("message").innerHTML="<b>Sorry, an error occurred:<br>" +
+          e + "</b>";
+        return;
+      }
+      document.getElementById("animateCheckbox").checked = false;
+      document.getElementById("animateCheckbox").onchange = doAnimateCheckbox;
+      createWorld();
+      installOrbitControls();
+      render();
+    }
+
+  </script>
+</head>
+<body onload="init()">
+
+<h2>Three.js Modeling Demo: Merry-Go-Round</h2>
+
+<noscript>
+  <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>
+</noscript>
+
+<p style="color:#AA0000; font-weight: bold" id="message">
+</p>
+
+<p>
+  <label><input type="checkbox" id="animateCheckbox"><b>Animate</b></label>
+  <b style="margin-left:50px">Use the mouse to rotate the model.</b>
+</p>
+
+<div id="canvas-holder" style="float:left; border: thin solid black; background-color: white">
+  <canvas width=1200 height=600 id="glcanvas"></canvas>
+</div>
+
+</body>
+</html>
